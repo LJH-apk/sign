@@ -26,7 +26,7 @@ Java可以从Java的官网下载(https://www.oracle.com/java/technologies/javase
 使用电脑上的压缩包工具如：将您下载到的jar包，名字应该形如  
 `SignIn-0.0.1-SNAPSHOT.jar`的文件后缀改为`.zip`并解压缩  
 找到`BOOT-INF/classes/application.properties`并打开  
-修改其中  
+修改
 ``` 
 spring.datasource.username=root
 spring.datasource.password=rootroot
