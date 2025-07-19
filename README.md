@@ -42,7 +42,7 @@ mysql -u username -p
 ```
 其中`username`改为自己设置的用户名，输入密码后命令提示符应该变为  
 `mysql>`  
-然后依次输入`CREATE DATABASE information;`和`USE information`  
+然后依次输入`CREATE DATABASE information;`和`USE information;`  
 最后执行 `SOURCE path/information.sql;`  
 (path为您电脑里information.sql的路径)  
 此时您的命令提示符窗口将会输出很多`Query OK`字样的内容，这是正常现象
