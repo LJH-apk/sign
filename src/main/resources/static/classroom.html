@@ -115,8 +115,7 @@
         // 使用axios从后端获取教室信息
         async function fetchClassroomFromBackend() {
             try {
-                // 实际使用时应替换为真实的后端API地址
-                const response = await axios.post('http://192.168.1.4:8080/api/students/queryroom', {
+                const response = await axios.post('/api/students/queryroom', {
                     name: localStorage.getItem('name'),
                     token: localStorage.getItem('token')
                 });
