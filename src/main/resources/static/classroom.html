@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>奔赴星海 - 入学导师抽取</title>
+    <link rel="icon" type="image/x-icon" href="img/1.png">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/classroom.css">
+</head>
+<body>
+    <!-- 背景图 -->
+    <div class="background-image"></div>
+    <div class="background-overlay"></div>
+    
+    <!-- 粒子背景 -->
+    <div class="particles" id="particles"></div>
+
+    <!-- 通知容器 -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <div class="notification-content">
+            <div class="notification-title" id="notification-title">抽取成功</div>
+            <div class="notification-message" id="notification-text">教室信息已更新</div>
+        </div>
+    </div>
+
+    <!-- 主卡片 -->
+    <div class="gallery-card">
+        <div class="gallery-header">
+            <h1>入学导师抽取</h1>
+            <p class="gallery-subtitle">亲手抽出你的入学导师</p>
+        </div>
+
+        <div class="classroom-container" id="classroomContainer">
+            <div class="classroom-info">
+                <div class="classroom-name" id="classroomName">等待抽取</div>
+                <div class="classroom-location" id="classroomLocation">点击下方按钮获取教室信息</div>
+                <!--<div class="classroom-description" id="classroomDescription">
+                    抽取后此处将显示教室详细信息
+                </div>-->
+            </div>
+
+            <!-- 抽取动画容器 -->
+            <div class="dice-container" id="diceContainer">
+                <div class="dice" id="dice">
+                    <i class="fas fa-dice"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="control-btn submit-btn" id="drawBtn">
+                <i class="fas fa-dice"></i>
+                <span>抽取教室</span>
+            </button>
+        </div>
+
+        <div class="copyright">
+            <div style="margin-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.15); padding-top: 15px;">
+                &copy; 2025 刘佳航 · 保留所有权利<br>
+                <span style="font-size: 12px; opacity: 0.6;">版本1.2.0 | 技术支持: 刘佳航</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 创建粒子背景
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 40;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+
+                // 随机大小和位置
+                const size = Math.random() * 6 + 2;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 15 + 15;
+
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // 显示通知
+        function showNotification(title, message, isSuccess = true) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+            const notificationTitle = document.getElementById('notification-title');
+
+            notification.className = `notification ${isSuccess ? '' : 'error'}`;
+            notificationText.textContent = message;
+            notificationTitle.textContent = title;
+            notification.querySelector('i').className = isSuccess ?
+                'fas fa-check-circle' : 'fas fa-exclamation-circle';
+
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // 使用axios从后端获取教室信息
+        async function fetchClassroomFromBackend() {
+            try {
+                // 实际使用时应替换为真实的后端API地址
+                const response = await axios.post('http://192.168.1.4:8080/api/students/queryroom', {
+                    name: localStorage.getItem('name'),
+                    token: localStorage.getItem('token')
+                });
+                let classroomName = '意信楼 ' + response.data.classroom + ' 教室';
+                let teacher = '入学导师为 ' + response.data.teacher + ' 老师';
+                return{
+                    success: true,
+                    classroom: {
+                        teacher: teacher,
+                        name: classroomName
+                    }
+                };
+                
+            } catch (error) {
+                console.error('后端请求失败:', error);
+            
+                return {
+                    success: false,
+                    classroom: {
+                        name:'抽取失败',
+                        location:'未查询到您的分班记录'
+                    }
+                };
+            }
+        }
+
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 创建背景粒子
+            createParticles();
+            
+            const drawBtn = document.getElementById('drawBtn');
+            const classroomName = document.getElementById('classroomName');
+            const classroomLocation = document.getElementById('classroomLocation');
+            //const classroomDescription = document.getElementById('classroomDescription');
+            const diceContainer = document.getElementById('diceContainer');
+            const dice = document.getElementById('dice');
+            
+            // 抽取按钮事件 - 使用axios请求后端数据
+            drawBtn.addEventListener('click', async function() {
+                // 保存原始按钮内容
+                const originalBtnContent = drawBtn.innerHTML;
+                
+                // 添加加载效果
+                drawBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 请求中...';
+                drawBtn.style.pointerEvents = 'none';
+                
+                // 隐藏教室信息
+                classroomName.textContent = '';
+                classroomLocation.textContent = '';
+                //classroomDescription.textContent = '';
+                
+                // 显示骰子动画容器
+                diceContainer.classList.add('active');
+                
+                // 确保DOM更新后添加动画
+                setTimeout(() => {
+                    dice.classList.add('animating');
+                }, 50);
+                
+                try {
+                    // 使用axios请求后端服务
+                    const response = await fetchClassroomFromBackend();
+                    
+                    if (response.success) {
+                        const classroom = response.classroom;
+                        
+                        // 隐藏骰子动画
+                        dice.classList.remove('animating');
+                        setTimeout(() => {
+                            diceContainer.classList.remove('active');
+                            
+                            // 更新UI
+                            classroomName.textContent = classroom.teacher;
+                            classroomLocation.textContent = classroom.name;
+                            //classroomDescription.textContent = classroom.description;
+                            
+                            // 添加内容动画效果
+                            classroomName.classList.remove('draw-effect');
+                            void classroomName.offsetWidth; // 触发重绘
+                            classroomName.classList.add('draw-effect');
+                            
+                            showNotification("抽取成功", `已分配教室：${classroom.name}`, true);
+                        }, 500);
+                    } else {
+                        showNotification('请求失败', '无法获取教室信息，请重试', false);
+                        dice.classList.remove('animating');
+                        setTimeout(() => {
+                            diceContainer.classList.remove('active');
+                        }, 500);
+                    }
+                } catch (error) {
+                    console.error('教室请求失败:', error);
+                    showNotification("请求错误", '请检查网络连接后重试', false);
+                    dice.classList.remove('animating');
+                    setTimeout(() => {
+                        diceContainer.classList.remove('active');
+                    }, 500);
+                } finally {
+                    // 恢复按钮状态
+                    setTimeout(() => {
+                        drawBtn.innerHTML = originalBtnContent;
+                        drawBtn.style.pointerEvents = 'auto';
+                    }, 500);
+                }
+            });
+            
+            // 添加键盘事件支持
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    drawBtn.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>奔赴星海 - 校园打卡活动</title>
+    <link rel="icon" type="image/x-icon" href="img/1.png">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet"> -->
+     <link href="css/font.css">
+    <link rel="stylesheet" href="css/check.css">
+</head>
+
+<body>
+    <!-- 粒子背景 -->
+    <div class="particles" id="particles"></div>
+
+    <!-- 背景容器 -->
+    <div class="background-container"></div>
+    <div class="overlay"></div>
+
+    <!-- 通知容器 -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <div class="notification-content">
+            <div class="notification-title" id="notification-title">打卡成功</div>
+            <div class="notification-message" id="notification-text">您已成功完成打卡！</div>
+        </div>
+    </div>
+
+    <!-- 图片展示卡片 -->
+    <div class="gallery-card floating">
+        <div class="gallery-header">
+            <h1>北京十一实验中学校园打卡</h1>
+            <p class="gallery-subtitle">探索校园美景，记录美好瞬间</p>
+        </div>
+
+        <div class="image-container">
+            <img src="https://images.unsplash.com/photo-1465101162946-4377e57745c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
+                alt="校园风景" class="main-image" id="mainImage">
+            <div class="image-info">
+                <div class="image-title">校园中心广场</div>
+                <div class="image-description">学校中心广场是同学们课余休息和交流的主要场所</div>
+            </div>
+        </div>
+
+        <div class="thumbnails">
+            <div class="thumbnail active"
+                data-image="https://images.unsplash.com/photo-1465101162946-4377e57745c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
+                data-title="校园中心广场" data-desc="学校中心广场是同学们课余休息和交流的主要场所">
+                <img src="https://images.unsplash.com/photo-1465101162946-4377e57745c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80"
+                    alt="中心广场">
+            </div>
+            <div class="thumbnail"
+                data-image="https://images.unsplash.com/photo-1505506874110-6a7a69069a08?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
+                data-title="图书馆" data-desc="学校图书馆拥有丰富的藏书和安静的学习环境">
+                <img src="https://images.unsplash.com/photo-1505506874110-6a7a69069a08?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80"
+                    alt="图书馆">
+            </div>
+            <div class="thumbnail"
+                data-image="https://images.unsplash.com/photo-1502136969935-8d8eef54d77b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
+                data-title="体育场" data-desc="现代化体育场是同学们锻炼身体和举办运动会的地方">
+                <img src="https://images.unsplash.com/photo-1502136969935-8d8eef54d77b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80"
+                    alt="体育场">
+            </div>
+            <div class="thumbnail"
+                data-image="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
+                data-title="实验楼" data-desc="配备先进设备的实验楼是科学探索的摇篮">
+                <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80"
+                    alt="实验楼">
+            </div>
+            <div class="thumbnail"
+                data-image="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
+                data-title="艺术中心" data-desc="艺术中心是培养同学们艺术素养和创造力的地方">
+                <img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80"
+                    alt="艺术中心">
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="control-btn" id="prevBtn">
+                <i class="fas fa-chevron-left"></i>
+                <span>上一张</span>
+            </div>
+            <button class="control-btn submit-btn" id="submitBtn">
+                <i class="fas fa-check-circle"></i>
+                <span>打卡</span>
+            </button>
+            <div class="control-btn" id="nextBtn">
+                <span>下一张</span>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        </div>
+
+        <!-- 打卡状态信息 -->
+        <div class="copyright">
+            <div style="margin-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.15); padding-top: 15px;">
+                &copy; 2025 刘佳航 · 保留所有权利<br>
+                <span style="font-size: 12px; opacity: 0.6;">版本1.2.0 | 技术支持: 刘佳航</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        let count = parseInt(localStorage.getItem("accessCount"));
+
+        // 创建粒子背景
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 40;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+
+                // 随机大小和位置
+                const size = Math.random() * 6 + 2;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 15 + 15;
+
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // 显示通知
+        function showNotification(title, message, isSuccess = true) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+            const notificationTitle = document.getElementById('notification-title');
+
+            notification.className = `notification ${isSuccess ? 'success' : 'error'}`;
+            notificationText.textContent = message;
+            notificationTitle.textContent = title;
+            notification.querySelector('i').className = isSuccess ?
+                'fas fa-check-circle' : 'fas fa-exclamation-circle';
+
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // 图片展示功能
+        document.addEventListener('DOMContentLoaded', function () {
+
+            //检查页面是否刷新
+            const isPageRefresh = performance.navigation.type == performance.navigation.TYPE_RELOAD;
+
+            // 创建背景粒子
+            createParticles();
+
+            const mainImage = document.getElementById('mainImage');
+            const imageTitle = document.querySelector('.image-title');
+            const imageDesc = document.querySelector('.image-description');
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+
+            let currentIndex = 0;
+
+            // 切换图片函数
+            function changeImage(index) {
+                const thumbnail = thumbnails[index];
+                const imgUrl = thumbnail.getAttribute('data-image');
+                const title = thumbnail.getAttribute('data-title');
+                const desc = thumbnail.getAttribute('data-desc');
+
+                // 应用淡出效果
+                mainImage.style.opacity = '0';
+
+                setTimeout(() => {
+                    mainImage.src = imgUrl;
+                    mainImage.alt = title;
+                    imageTitle.textContent = title;
+                    imageDesc.textContent = desc;
+
+                    // 应用淡入效果
+                    mainImage.style.opacity = '1';
+
+                    // 更新当前选中缩略图
+                    thumbnails.forEach(thumb => thumb.classList.remove('active'));
+                    thumbnail.classList.add('active');
+
+                    currentIndex = index;
+                }, 300);
+            }
+
+            // 缩略图点击事件
+            thumbnails.forEach((thumbnail, index) => {
+                thumbnail.addEventListener('click', () => {
+                    changeImage(index);
+                });
+            });
+
+            // 上一张按钮
+            prevBtn.addEventListener('click', () => {
+                let newIndex = currentIndex - 1;
+                if (newIndex < 0) newIndex = thumbnails.length - 1;
+                changeImage(newIndex);
+            });
+
+            // 下一张按钮
+            nextBtn.addEventListener('click', () => {
+                let newIndex = currentIndex + 1;
+                if (newIndex >= thumbnails.length) newIndex = 0;
+                changeImage(newIndex);
+            });
+
+            //如果页面刷新，但seesion中有记录，则继续限制
+            if (isPageRefresh && sessionStorage.getItem('hasSubmitted') === 'true') {
+                submitBtn.disable = true;
+                submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> 已打卡';
+            }
+
+            // 打卡按钮事件
+            submitBtn.addEventListener('click', async function () {
+                //检查是否已经提交过
+                const hasSubmitted = sessionStorage.getItem('hasSubmitted');
+                if (hasSubmitted == 'true') {
+                    showNotification("Ops！", "您无需重复打卡", false);
+                    return;
+                }
+
+                //获取学生信息
+                const name = localStorage.getItem("name");
+                const token = localStorage.getItem("token");
+
+                // 添加加载效果
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 打卡中...';
+                submitBtn.style.pointerEvents = 'none';
+
+                try {
+
+                    //提交
+                    const response = await axios.post('http://192.168.1.4:8080/api/students/access', {
+                        name: name,
+                        token: token,
+                        location: "剧院"
+                    });
+                    submitBtn.disable = true;
+
+
+                    if (response.data.success) {
+                        //标记为已提交
+                        sessionStorage.setItem('hasSubmitted', 'true');
+                        localStorage.setItem("accessCount", response.data.accessCount);
+                        showNotification("打卡成功", `${name}同学打卡成功！\n位置: ${response.data.location}`, true);
+                        //document.getElementById('accessCount').textContent = response.data.accessCount;
+                        submitBtn.disable = false;
+                    } else {
+                        showNotification('Ops！', response.data.message || '打卡失败，请重试', false);
+                        submitBtn.disable = false;
+                    }
+
+                    // 添加成功动画效果
+                    submitBtn.classList.add('pulse');
+                    setTimeout(() => {
+                        submitBtn.classList.remove('pulse');
+                    }, 1000);
+
+                    if(response.data.accessCount >= 5){
+                        setTimeout(() => {
+                            window.location.replace('http://192.168.1.4:8080/generate');
+                        },3000);
+                    }
+
+
+                } catch (error) {
+                    console.error('打卡请求失败:', error);
+                    showNotification("打卡失败", '网络错误，请稍后重试', false);
+                    submitBtn.disable = false;
+                } finally {
+                    // 恢复按钮状态
+                    setTimeout(() => {
+                        submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> 打卡';
+                        submitBtn.style.pointerEvents = 'auto';
+                    }, 1000);
+                }
+            });
+
+            // 添加键盘导航
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    prevBtn.click();
+                } else if (e.key === 'ArrowRight') {
+                    nextBtn.click();
+                } else if (e.key === 'Enter' || e.key === ' ') {
+                    submitBtn.click();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

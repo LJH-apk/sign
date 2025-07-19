@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>北京十一实验中学 - 入校打卡系统</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="img/1.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/sign.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- 在粒子背景之后添加 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="school-logo">
+            <i class="fas fa-graduation-cap"></i>
+        </div>
+        <div class="loader">
+            <span>BNDES</span>
+            <span>BNDES</span>
+        </div>
+        <div class="loader-text" id="loaderText">正在初始化加载...</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="stats-container">
+            <div class="stat-item">
+                <i class="fas fa-clock"></i> <span id="loadTime">0.0s</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 粒子背景 -->
+    <div class="particles" id="particles"></div>
+
+    <!-- 背景容器 -->
+    <div class="background-container"></div>
+    <div class="overlay"></div>
+
+    <!-- 消息通知 -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-text">签到成功！</span>
+    </div>
+
+    <!-- 登录卡片 -->
+    <div class="login-card">
+        <div class="logo">
+            <i class="fas fa-user-circle"></i>
+        </div>
+        <h1>奔赴星海之旅</h1>
+        <p class="subtitle">请输入你的名字以继续</p>
+
+        <form id="signForm">
+            <div class="form-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="username" placeholder="请输入你的姓名" required>
+            </div>
+
+            <div class="button-container">
+                <button type="submit" class="sign-button" id="signButton">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>打卡签到</span>
+                </button>
+            </div>
+
+            <!-- 版权信息 -->
+            <div class="copyright">
+                &copy; 2025 刘佳航 · 保留所有权利<br>
+                <span style="font-size: 11px; opacity: 0.6;">版本 1.2.0 | 技术支持: 刘佳航</span>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // 创建粒子背景
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+
+                // 随机大小和位置
+                const size = Math.random() * 8 + 2;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 10 + 10;
+
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.opacity = Math.random() * 0.5 + 0.2;
+                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+
+                particlesContainer.appendChild(particle);
+            }
+
+            // 添加浮动动画
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float {
+                    0%, 100% { transform: translate(0, 0); }
+                    25% { transform: translate(${Math.random() * 30 - 15}px, ${Math.random() * 30 - 15}px); }
+                    50% { transform: translate(${Math.random() * 40 - 20}px, ${Math.random() * 40 - 20}px); }
+                    75% { transform: translate(${Math.random() * 30 - 15}px, ${Math.random() * 30 - 15}px); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // 显示通知
+        function showNotification(message, isSuccess = true) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+
+            notification.className = `notification ${isSuccess ? 'success' : 'error'}`;
+            notificationText.textContent = message;
+            notification.querySelector('i').className = isSuccess ?
+                'fas fa-check-circle' : 'fas fa-exclamation-circle';
+
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // 表单提交处理
+        document.addEventListener('DOMContentLoaded', function () {
+            // 在 DOMContentLoaded 事件开始时
+            const loaderText = document.getElementById('loaderText');
+            const progressBar = document.getElementById('progressBar');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const loadTime = document.getElementById('loadTime');
+
+            let startTime = Date.now();
+            let progress = 0;
+
+            // 更新加载状态函数
+            function updateProgress(newProgress, message) {
+                progress = newProgress;
+                progressBar.style.width = `${progress}%`;
+                loaderText.textContent = message;
+                const elapsed = (Date.now() - startTime) / 1000;
+                loadTime.textContent = `${elapsed.toFixed(1)}s`;
+            }
+
+            // 初始化进度
+            updateProgress(10, "正在初始化页面...");
+
+            // 创建粒子后更新进度
+            createParticles();
+            updateProgress(30, "正在准备界面元素...");
+
+            // 表单初始化后更新进度
+            setTimeout(() => {
+                updateProgress(70, "正在加载核心功能...");
+
+                // 最终完成加载
+                setTimeout(() => {
+                    window.onload = function(){
+                        updateProgress(100, "加载完成！");
+                        loaderText.style.color = "#a3ffbb";
+                    };
+
+                    // 隐藏加载层
+                    setTimeout(() => {
+                        loadingOverlay.style.opacity = '0';
+                        setTimeout(() => {
+                            loadingOverlay.style.display = 'none';
+                        }, 500);
+                    }, 800);
+                }, 600);
+            }, 500);
+
+
+            // 创建背景粒子
+            createParticles();
+
+            const signForm = document.getElementById('signForm');
+            const usernameInput = document.getElementById('username');
+            const signButton = document.getElementById('signButton');
+            const signButtonIcon = signButton.querySelector('i');
+            const signButtonText = signButton.querySelector('span');
+
+            // 输入框动画效果
+            usernameInput.addEventListener('focus', function () {
+                this.parentElement.classList.add('pulse');
+            });
+
+            usernameInput.addEventListener('blur', function () {
+                this.parentElement.classList.remove('pulse');
+            });
+
+            // 表单提交
+            signForm.addEventListener('submit', async function (e) {
+                if (loadingOverlay.style.display !== 'none') {
+                    e.preventDefault();
+                    showNotification('系统仍在初始化，请稍候...', false);
+                    return;
+                }
+
+                const username = usernameInput.value;
+
+                if (!username) {
+                    usernameInput.parentElement.classList.add('shake');
+                    showNotification('请输入你的姓名', false);
+                    setTimeout(() => {
+                        usernameInput.parentElement.classList.remove('shake');
+                    }, 500);
+                    return;
+                }
+
+                // 保存原始按钮状态
+                const originalText = signButtonText.textContent;
+                const originalIcon = signButtonIcon.className;
+
+                // 更新按钮状态
+                signButton.disabled = true;
+                signButtonText.textContent = '签到中...';
+                signButtonIcon.className = 'fas fa-spinner fa-spin';
+
+                try {
+                    // 使用Axios发送POST请求
+                    const response = await axios.post('http://192.168.1.4:8080/api/students/access', {
+                        name: username,
+                        location: "校门"
+                    });
+
+                    // 模拟延迟以展示加载效果
+                    await new Promise(resolve => setTimeout(resolve, 800));
+
+                    if (response.data.success) {
+                        showNotification(`签到成功，${username}同学！\n当前位置，校门`);
+                        localStorage.setItem("name", username);
+                        localStorage.setItem("token", response.data.token);
+                        localStorage.setItem("accessCount", response.data.accessCount);
+                        signForm.reset();
+                    } else {
+                        showNotification(response.data.message || '签到失败，请重试', false);
+                    }
+                } catch (error) {
+                    console.error('签到请求失败:', error);
+                    showNotification('网络错误，请稍后重试', false);
+                } finally {
+                    // 恢复按钮状态
+                    signButtonText.textContent = originalText;
+                    signButtonIcon.className = originalIcon;
+                    signButton.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

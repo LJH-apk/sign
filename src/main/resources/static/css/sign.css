@@ -1,0 +1,433 @@
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans SC', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #5c7cfa, #9f75e0);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 粒子背景 */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* 背景图容器 */
+        .background-container {
+            position: fixed;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            background: url('../img/2.jpg') no-repeat center center;
+            background-size: cover;
+            filter: blur(8px) brightness(0.8);
+            z-index: -1;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* 登录卡片 */
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            padding: 40px 35px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
+            z-index: -1;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo i {
+            font-size: 48px;
+            background: linear-gradient(45deg, #ffffff, #e0e0e0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 16px;
+            opacity: 0.9;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin: 25px 0;
+        }
+
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 18px;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px 16px 16px 50px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            color: white;
+            font-size: 17px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 400;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.15);
+        }
+
+        /* 按钮样式 */
+        .sign-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(110, 142, 251, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sign-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(110, 142, 251, 0.6);
+            background: linear-gradient(135deg, #7d9afc, #b686ed);
+        }
+
+        .sign-button:active {
+            transform: translateY(1px);
+        }
+
+        .sign-button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 20px;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(25deg);
+            transition: all 0.5s;
+        }
+
+        .sign-button:hover::after {
+            left: 120%;
+        }
+
+        /* 版权信息 */
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 13px;
+            opacity: 0.7;
+            color: rgba(255, 255, 255, 0.8);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            padding-top: 20px;
+            line-height: 1.6;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 30px 25px;
+                margin: 20px;
+                max-width: 90%;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            input {
+                padding: 14px 14px 14px 45px;
+                font-size: 16px;
+            }
+
+            .sign-button {
+                padding: 16px;
+                font-size: 17px;
+            }
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .login-card {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .shake {
+            animation: shake 0.5s ease;
+        }
+
+        .pulse {
+            animation: pulse 0.8s ease;
+        }
+
+        /* 消息通知 */
+        .notification {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-weight: 500;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+
+        .success {
+            background: linear-gradient(135deg, #4cd964, #2ecc71);
+            color: white;
+        }
+
+        .error {
+            background: linear-gradient(135deg, #ff5e57, #ff3b30);
+            color: white;
+        }
+
+        .notification i {
+            font-size: 20px;
+        }
+        
+        .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 1) !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease;
+    }
+    
+    .school-logo {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, #3498db, #8e44ad);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 30px;
+        animation: pulse-logo 2s infinite;
+        box-shadow: 0 0 20px rgba(52, 152, 219, 0.5);
+    }
+    
+    .school-logo i {
+        font-size: 50px;
+        color: white;
+    }
+    
+    .loader-text {
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+        text-align: center;
+        color: #64b5f6;
+        font-weight: 500;
+        margin-top: 30px;
+        min-height: 25px;
+        transition: all 0.3s ease;
+    }
+    
+    .progress-container {
+        width: 280px;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+        overflow: hidden;
+        margin-top: 20px;
+    }
+    
+    .progress-bar {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #3498db, #8e44ad);
+        border-radius: 3px;
+        transition: width 0.3s ease;
+    }
+    
+    .loader {
+        position: relative;
+        width: 200px;
+        height: 60px;
+        margin-bottom: 20px;
+    }
+    
+    .loader span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 38px;
+        letter-spacing: 2px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    
+    .loader span:nth-child(1) {
+        color: transparent;
+        -webkit-text-stroke: 0.3px #3498db;
+    }
+    
+    .loader span:nth-child(2) {
+        color: #64b5f6;
+        -webkit-text-stroke: 1px rgba(52, 152, 219, 0.8);
+        animation: textAnimation 3s ease-in-out infinite;
+    }
+    
+    .stats-container {
+        margin-top: 25px;
+        display: flex;
+        gap: 15px;
+        color: #a3d9ff;
+        font-size: 0.9rem;
+    }
+    
+    .stat-item {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 6px 12px;
+        border-radius: 15px;
+        min-width: 80px;
+    }
+    
+    @keyframes textAnimation {
+        0%, 100% { clip-path: polygon(0% 45%, 15% 44%, 32% 50%, 54% 60%, 70% 61%, 84% 59%, 100% 52%, 100% 100%, 0% 100%); }
+        50% { clip-path: polygon(0% 60%, 16% 65%, 34% 66%, 51% 62%, 67% 50%, 84% 45%, 100% 46%, 100% 100%, 0% 100%); }
+    }
+    
+    @keyframes pulse-logo {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.5); }
+        50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(52, 152, 219, 0); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(52, 152, 219, 0); }
+    }
